@@ -10,7 +10,7 @@ import lombok.Getter;
 public class UserJoinResponse {
 
     private Integer id;
-    private String name;
+    private String userName;
     private UserRole role;
 
     public static UserJoinResponse fromUser(User user) {

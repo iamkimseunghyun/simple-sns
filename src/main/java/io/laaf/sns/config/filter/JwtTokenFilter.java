@@ -19,11 +19,11 @@ import java.io.IOException;
 @Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final String secretKey;
+    private final String key;
     private final UserService userService;
 
-    public JwtTokenFilter(String secretKey, UserService userService) {
-        this.secretKey = secretKey;
+    public JwtTokenFilter(String key, UserService userService) {
+        this.key = key;
         this.userService = userService;
     }
 
@@ -31,25 +31,24 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // get header
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info("겟헤더= {}", header);
         if (header == null || !header.startsWith("Bearer ")) {
             log.error("Error occurs while getting header. header is null or invalid");
             filterChain.doFilter(request, response);
-            return ;
+            return;
         }
 
         try {
             final String token = header.split(" ")[1].trim();
-            log.info("토큰 뿌려봐 = {}", token);
             // TODO: check token is valid
-            if (JwtTokenUtils.isExpired(token, secretKey)) {
+            if (JwtTokenUtils.isExpired(token, key)) {
                 log.error("Key is expired");
                 filterChain.doFilter(request, response);
                 return ;
             }
             // TODO: get username from token
-            String username = JwtTokenUtils.getUserName(token, secretKey);
+            String username = JwtTokenUtils.getUsername(token, key);
             log.info("유저네임이 없다는 거? ={} ", username);
+
             // TODO: check the user is valid
             User user = userService.loadUserByUserName(username);
 
@@ -57,9 +56,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                             user, null, user.getAuthorities());
 
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (RuntimeException e) {
-            log.error("Error occurs while validating. 여기냐? {}", e.toString());
+            log.error("Error occurs while validating. {}", e.toString());
             filterChain.doFilter(request, response);
             return;
         }
