@@ -1,0 +1,31 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgresSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+
+  datasource:
+    hikari:
+      maximum-pool-size: 4
+    url: jdbc:postgresql://ec2-54-147-36-107.compute-1.amazonaws.com/dfu9739t42ie9d
+    username: wtcdufqgbqvsko
+    password: b98f07a1edd26b1dbefb5f9e38844a099c319347ebe10b141c3d0d5da0505631
+    driver-class-name: org.postgresql.Driver
+
+  sql:
+    init:
+      platform: postgres
+
+jwt:
+  secret-key: fastcampus.sns-application-2022.secret_key
+  # 30 days
+  token.expired-time-ms: 2592000000
