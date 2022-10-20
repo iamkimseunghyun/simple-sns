@@ -19,7 +19,7 @@ public class JwtTokenUtils {
     }
 
     public static String getUsername(String token, String key) {
-        return extractClaims(token, key).get("username", String.class);
+        return extractClaims(token, key).get("userName", String.class);
     }
 
     public static Claims extractClaims(String token, String key) {

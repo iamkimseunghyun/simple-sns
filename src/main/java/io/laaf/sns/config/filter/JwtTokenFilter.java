@@ -46,11 +46,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 return ;
             }
             // TODO: get username from token
-            String username = JwtTokenUtils.getUsername(token, key);
-            log.info("유저네임이 없다는 거? ={} ", username);
+            String userName = JwtTokenUtils.getUsername(token, key);
+            log.info("유저네임이 없다는 거? ={} ", userName);
 
             // TODO: check the user is valid
-            User user = userService.loadUserByUserName(username);
+            User user = userService.loadUserByUserName(userName);
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             user, null, user.getAuthorities());
