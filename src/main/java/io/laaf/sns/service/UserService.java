@@ -29,6 +29,7 @@ public class UserService {
     private Long expiredTimeMs;
 
     public User loadUserByUserName(String userName) {
+        log.info("로드유저바이유저네임={}", userName);
         return userEntityRepository.findByUserName(userName).map(User::fromEntity).orElseThrow(
                 () -> new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", userName))
         );

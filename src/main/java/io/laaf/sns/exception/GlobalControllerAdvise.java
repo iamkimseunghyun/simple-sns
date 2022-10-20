@@ -24,5 +24,4 @@ public class GlobalControllerAdvise {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Response.error(ErrorCode.INTERNAL_SERVER_ERROR.name()));
     }
-
 }
